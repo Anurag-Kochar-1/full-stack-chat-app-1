@@ -3,12 +3,16 @@ import {Flex , Text} from "@chakra-ui/react"
 import Sidebar from '../../components/Sidebar/Sidebar'
 import Topbar from '../../components/Topbar/Topbar'
 import Bottombar from '../../components/Bottombar/Bottombar'
+import Head from 'next/head'
 
 const Chat = () => {
   return (
     <Flex
     h={"100vh"}
-    > 
+    >
+        <Head>
+            <title> chat </title>
+        </Head> 
     
         <Sidebar />
 

@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Sidebar from '../components/Sidebar/Sidebar'
 import styles from '../styles/Home.module.css'
+import {Box} from  "@chakra-ui/react"
 
 const Home: NextPage = () => {
   return (
@@ -13,7 +14,10 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Sidebar />
+
+      <Box h={"100vh"}>
+        <Sidebar />
+      </Box>
       
 
       
