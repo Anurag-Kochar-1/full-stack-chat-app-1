@@ -5,8 +5,32 @@ import Topbar from '../../components/Topbar/Topbar'
 import Bottombar from '../../components/Bottombar/Bottombar'
 import Head from 'next/head'
 
+import {query, collection , doc} from "firebase/firestore"
+import { useCollectionData, useDocumentData } from "react-firebase-hooks/firestore"
+import { useRouter } from 'next/router'
+import { db } from '../../firebaseconfig'
+import MessageBox from '../../components/MessageBox/MessageBox'
+import getOtherEmail from '../../utils/getOtherEmail'
+
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth } from "../../firebaseconfig"
+
 const Chat = () => {
-  return (
+    const [user, loading, error] = useAuthState(auth)  
+    const router = useRouter()
+    const { id } = router.query
+
+    const q = query(collection(db, `chats/${id}/messages`))
+    const [messages] = useCollectionData (q);
+    
+    // const getMessages = () => {
+        
+    // }
+
+    const [chat] = useDocumentData(doc(db, "chats" , id))
+    console.log(chat);
+    
+    return (
     <Flex
     h={"100vh"}
     >
@@ -21,7 +45,7 @@ const Chat = () => {
         direction={"column"}
         flex={1}
         >
-            <Topbar />
+            <Topbar email={getOtherEmail(chat?.users, user)} />
 
             <Flex 
             flex={1}
@@ -31,32 +55,15 @@ const Chat = () => {
             overflowX={"scroll"}
             sx={{scrollbarWidth: "none"}}
             >
-                <Flex>
-                    <Text 
-                        bgColor={"blue.100"}
-                        w={"fit-content"}
-                        minWidth={"100px"}
-                        rounded={"md"}
-                        p={3}
-                        m={1}
-                        > message 1 ss </Text>
-                </Flex>
+                
+            {messages?.map((message) => {
+            return <MessageBox key={Math.random()} message={message} />
+            })}
+
                 
 
-                <Flex >
-                    <Text 
-                        bgColor={"pink.100"}
-                        w={"fit-content"}
-                        minWidth={"100px"}
-                        rounded={"md"}
-                        p={3}
-                        m={1}
-                        alignSelf={"flex-end"}
-                        > message 2 ss </Text>
-                </Flex>
-
             </Flex>
-            <Bottombar />
+            <Bottombar id={id} />
 
         </Flex>
     

@@ -19,12 +19,15 @@ const Sidebar = () => {
 
     const newChat = async () => {
         const input = prompt("Enter email of chat recipient")
-        if(input !== null && input.length !== 0) {
-            await addDoc(collection(db, "chats"), {users: [user?.email, input]})
+        if(input !== null && input.length !== 0 && input == user?.email) {
+            if(!chatExists(input)){
+                await addDoc(collection(db, "chats"), {users: [user?.email, input]})
+            }
         } else {
             alert("Enter correct Email")
         }
     }
+    const chatExists = email => chats?.find(chat => (chat.users.includes(user?.email) && chat.users.includes(email))) 
     
   return (
     <Flex
